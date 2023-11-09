@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS students_source (id INT, name VARCHAR, age INT, address VARCHAR) WITH(connector='kafka',topic='mysql-server.school.students',properties.bootstrap.server='kafka2:9092',scan.startup.mode='latest',scan.startup.timestamp_millis='140000000') FORMAT PLAIN ENCODE JSON;
+
+CREATE SINK sync_data FROM students_source WITH(connector='jdbc',jdbc.url='jdbc:mysql://localhost:3307/mapping_school?user=root&password=12345678',table.name='mapping_students',type='upsert',primary_key='id');
